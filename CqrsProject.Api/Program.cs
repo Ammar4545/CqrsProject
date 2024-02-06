@@ -1,6 +1,9 @@
 using CqrsProject.DataAccess.Data;
 using CqrsProject.DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using CqrsProject.DataAccess.Repositories;
 
 namespace CqrsProject.Api
 {
@@ -18,7 +21,9 @@ namespace CqrsProject.Api
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IUnitOfWork,IUnitOfWork>();
+            //var reare = AppDomain.CurrentDomain.GetAssemblies().Distinct().ToArray());
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
             var app = builder.Build();
 
