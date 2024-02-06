@@ -1,3 +1,6 @@
+using CqrsProject.DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace CqrsProject.Api
 {
     public class Program
@@ -7,6 +10,10 @@ namespace CqrsProject.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext<ApplicationDbContext>
+                (option => option.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
