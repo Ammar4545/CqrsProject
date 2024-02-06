@@ -1,4 +1,5 @@
 using CqrsProject.DataAccess.Data;
+using CqrsProject.DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CqrsProject.Api
@@ -17,6 +18,7 @@ namespace CqrsProject.Api
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IUnitOfWork,IUnitOfWork>();
 
             var app = builder.Build();
 
