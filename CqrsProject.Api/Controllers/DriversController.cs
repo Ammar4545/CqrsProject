@@ -8,6 +8,7 @@ using CqrsProject.Entities.DTO.Requests;
 using CqrsProject.Entities.DTO.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.AccessControl;
 
 namespace CqrsProject.Api.Controllers
@@ -64,12 +65,10 @@ namespace CqrsProject.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var result = _mapper.Map<Driver>(driver);
+            var command = new UpdateDriverCommand(driver);
+            var result = await _mediator.Send(command);
 
-            await _unitOfWork.Drivers.Update(result);
-            await _unitOfWork.CompleteAsync();
-
-            return NoContent();
+            return result ? NoContent() : BadRequest();
         }
 
         [HttpDelete]
