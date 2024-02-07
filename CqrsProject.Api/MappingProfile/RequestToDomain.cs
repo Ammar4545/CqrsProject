@@ -21,7 +21,8 @@ namespace CqrsProject.Api.MappingProfile
                 ForMember(dest => dest.Status, option => option.MapFrom(src => 1))
                 ;
             CreateMap<UpdateDriverRequest, Driver>().
-                ForMember(dest => dest.UpdatedDate, option => option.MapFrom(src => DateTime.UtcNow))
+                ForMember(dest => dest.UpdatedDate, option => option.MapFrom(src => DateTime.UtcNow)).
+                ForMember(dest => dest.Id, option => option.MapFrom(src => src.DriverId))
                 ;
 
         }
