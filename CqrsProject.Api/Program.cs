@@ -21,10 +21,11 @@ namespace CqrsProject.Api
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
-            //var reare = AppDomain.CurrentDomain.GetAssemblies().Distinct().ToArray());
+            //var test = AppDomain.CurrentDomain.GetAssemblies().Distinct().ToArray());
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-
+            //add mediator to DI container
+            builder.Services.AddMediatR(confg => confg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

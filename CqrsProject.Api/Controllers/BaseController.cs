@@ -8,8 +8,8 @@ namespace CqrsProject.Api.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        public IUnitOfWork _unitOfWork;
-        public IMapper _mapper;
+        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IMapper _mapper;
         public BaseController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;

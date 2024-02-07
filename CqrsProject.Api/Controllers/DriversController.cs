@@ -1,16 +1,21 @@
 ﻿using AutoMapper;
+using CqrsProject.Api.Query;
 using CqrsProject.DataAccess.Repositories.Interfaces;
 using CqrsProject.Entities.Dbset;
 using CqrsProject.Entities.DTO.Requests;
 using CqrsProject.Entities.DTO.Responses;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CqrsProject.Api.Controllers
 {
     public class DriversController : BaseController
     {
-        public DriversController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        private readonly IMediator _mediator;
+        public DriversController(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
+            : base(unitOfWork, mapper)
         {
+            _mediator=mediator;
         }
         [HttpGet]
         [Route("{driverId:guid}")]
@@ -22,6 +27,17 @@ namespace CqrsProject.Api.Controllers
                 return NotFound("no Driver for this id");
 
             var result = _mapper.Map<GetDriverResponse>(driver);
+
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllDriver()
+        {
+            var query = new GetAllDriverQuery();
+
+            var result = await _mediator.Send(query);
 
             return Ok(result);
 
@@ -53,17 +69,6 @@ namespace CqrsProject.Api.Controllers
             await _unitOfWork.CompleteAsync();
 
             return NoContent();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllDriver()
-        {
-            var drivers = await _unitOfWork.Drivers.GetAll();
-
-            var result = _mapper.Map<IEnumerable<GetDriverResponse>>(drivers);
-
-            return Ok(result);
-
         }
 
         [HttpDelete]
