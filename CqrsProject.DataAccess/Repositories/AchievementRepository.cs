@@ -74,7 +74,7 @@ namespace CqrsProject.DataAccess.Repositories
         {
             try
             {
-                var result = await _dbset.FirstOrDefaultAsync(x => x.Id == achievement.Id);
+                var result = await _dbset.FirstOrDefaultAsync(x => x.DriverId == achievement.DriverId);
                 if (result is null)
                     return false;
 
