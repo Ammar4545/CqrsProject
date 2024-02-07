@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CqrsProject.Api.Queries;
 using CqrsProject.Api.Query;
 using CqrsProject.DataAccess.Repositories.Interfaces;
 using CqrsProject.Entities.Dbset;
@@ -6,6 +7,7 @@ using CqrsProject.Entities.DTO.Requests;
 using CqrsProject.Entities.DTO.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.AccessControl;
 
 namespace CqrsProject.Api.Controllers
 {
@@ -21,15 +23,14 @@ namespace CqrsProject.Api.Controllers
         [Route("{driverId:guid}")]
         public async Task<IActionResult> GetDriver(Guid driverId)
         {
-            var driver =await _unitOfWork.Drivers.GetById(driverId);
+            var query = new GetDriverQuery(driverId);
 
-            if (driver == null)
-                return NotFound("no Driver for this id");
+            var result = await _mediator.Send(query);
 
-            var result = _mapper.Map<GetDriverResponse>(driver);
+            if (result is null)
+                return NotFound();
 
             return Ok(result);
-
         }
 
         [HttpGet]
