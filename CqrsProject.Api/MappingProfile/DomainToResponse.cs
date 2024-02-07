@@ -15,6 +15,10 @@ namespace CqrsProject.Api.MappingProfile
                 .ForMember(dest => dest.DriverId, option => option.MapFrom(src => src.Id))
                 .ForMember(dest=>dest.FullName,option=>option.MapFrom(src=>$"{src.FirstName} {src.LastName}"));
                 ;
+            //CreateMap<Driver, GetDriverResponse>()
+            //    .ForMember(dest => dest.DriverId, option => option.MapFrom(src => src.Id))
+            //    .ForMember(dest => dest.FullName, option => option.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+            ;
         }
         
     }

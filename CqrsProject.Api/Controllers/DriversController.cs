@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CqrsProject.Api.Commands;
 using CqrsProject.Api.Queries;
 using CqrsProject.Api.Query;
 using CqrsProject.DataAccess.Repositories.Interfaces;
@@ -50,12 +51,11 @@ namespace CqrsProject.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var result = _mapper.Map<Driver>(driver);
+            var command = new AddDriverCommand(driver);
+            var result = await _mediator.Send(command);
 
-            await _unitOfWork.Drivers.Add(result);
-            await _unitOfWork.CompleteAsync();
-
-            return CreatedAtAction(nameof(GetDriver), new { driverId = result.Id }, result);
+            return CreatedAtAction(nameof(GetDriver),
+                new { driverId = result.DriverId }, result);
         }
 
         [HttpPut]
