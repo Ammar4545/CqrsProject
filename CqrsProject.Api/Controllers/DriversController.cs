@@ -15,11 +15,11 @@ namespace CqrsProject.Api.Controllers
 {
     public class DriversController : BaseController
     {
-        private readonly IMediator _mediator;
+        
         public DriversController(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
-            : base(unitOfWork, mapper)
+            : base(unitOfWork, mapper, mediator)
         {
-            _mediator=mediator;
+           
         }
         [HttpGet]
         [Route("{driverId:guid}")]
@@ -75,13 +75,8 @@ namespace CqrsProject.Api.Controllers
         [Route("{driverId:guid}")]
         public async Task<IActionResult> DeleteDriver(Guid driverId)
         {
-            var driver = await _unitOfWork.Drivers.GetById(driverId);
-
-            if (driver is null)
-                return NotFound();
-
-            await _unitOfWork.Drivers.Delete(driverId);
-            await _unitOfWork.CompleteAsync();
+            var command = new DeleteDriverCommand(driverId);
+            var result = await _mediator.Send(command);
 
             return NoContent();
 

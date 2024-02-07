@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CqrsProject.DataAccess.Repositories.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CqrsProject.Api.Controllers
@@ -10,10 +11,12 @@ namespace CqrsProject.Api.Controllers
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
-        public BaseController(IUnitOfWork unitOfWork, IMapper mapper)
+        protected readonly IMediator _mediator;
+        public BaseController(IUnitOfWork unitOfWork, IMapper mapper,IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mediator = mediator;
         }
     }
 }
